@@ -174,3 +174,58 @@ const changeLanguage = () => {
   
   };
   
+
+  const renderContainer = () => {
+    getLocalStorage()
+  
+    const contentContainer = document.createElement('div');
+    contentContainer.classList.add('container');
+  
+    const textArea = document.createElement('textarea');
+    textArea.setAttribute('id', 'textarea');
+    textArea.classList.add('textarea');
+    textArea.addEventListener('keydown', pressHandler);
+    textArea.addEventListener('keyup', suppressHandler);
+  
+    const description = document.createElement('div')
+    description.classList.add("description")
+    description.textContent = "Для переключения языка комбинация: левыe shift + alt"
+  
+    contentContainer.append(textArea, renderKeyboard(language, capsLock), description);
+    document.body.prepend(contentContainer);
+    
+  };
+  
+  const renderKeyboard = (lang = 'ru', caps = false, shift = false) => {
+  
+  
+    const keysArr = createKeys(lang, caps, shift);
+  
+    const keyboardWrapper = document.createElement('div');
+    keyboardWrapper.classList.add('keyboard-wrapper');
+  
+    const row1 = document.createElement('div');
+    const row2 = document.createElement('div');
+    const row3 = document.createElement('div');
+    const row4 = document.createElement('div');
+    const row5 = document.createElement('div');
+  
+    for (let i = 0; i < keysArr.length; i++) {
+      keysArr[i].addEventListener('click', clickHandler);
+  
+      if (i < 14) row1.append(keysArr[i]);
+      if (i >= 14 && i < 29) row2.append(keysArr[i]);
+      if (i >= 29 && i < 42) row3.append(keysArr[i]);
+      if (i >= 42 && i < 55) row4.append(keysArr[i]);
+      if (i >= 55) row5.append(keysArr[i]);
+    }
+  
+    const rowArr = [row1, row2, row3, row4, row5];
+    rowArr.forEach(el => el.classList.add('row'));
+    keyboardWrapper.append(...rowArr);
+  
+    return keyboardWrapper;
+  
+  }
+  
+  document.addEventListener('DOMContentLoaded', renderContainer);
